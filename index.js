@@ -10,19 +10,35 @@ const { dbConnection } = require('./database/config')
 const app = express();
 
 //CORS
-app.use(cors())
+app.use(cors());
+
+//lectura y parseo del body
+app.use(express.json());
 //database
 dbConnection();
 
 console.log(process.env)
 //Rutas
 
-app.get('/' , (req, res) => {
-    res.json({
-        ok:true,
-        msj:'hola mundo'
-    })
-});
+app.use('/api/usuarios', require('./routes/usuarios'));
+app.use('/api/login', require('./routes/auth'));
+
+// app.get('/' , (req, res) => {
+//     res.json({
+//         ok:true,
+//         msj:'hola mundo'
+//     })
+// });
+
+// app.get('/api/usuarios' , (req, res) => {
+//     res.json({
+//         ok:true,
+//         usuarios:[{
+//             id:123,
+//             nombre:'Fernando'
+//         }],
+//         })
+// });
 
 app.listen(process.env.PORT,() => {
     console.log('server corriendo en ' + process.env.PORT)
